@@ -1,0 +1,78 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "AllowS3BucketAccess",
+			"Effect": "Allow",
+			"Action": [
+				"s3:GetBucketVersioning",
+				"s3:GetBucketAcl",
+				"s3:GetBucketLocation"
+			],
+			"Resource": [
+				"arn:aws:s3:::codepipeline-us-east-1-948b6d797806-4ae5-8a87-66c1952b5864"
+			],
+			"Condition": {
+				"StringEquals": {
+					"aws:ResourceAccount": "721559936150"
+				}
+			}
+		},
+		{
+			"Sid": "AllowS3ObjectAccess",
+			"Effect": "Allow",
+			"Action": [
+				"s3:PutObject",
+				"s3:PutObjectAcl",
+				"s3:GetObject",
+				"s3:GetObjectVersion",
+				"ecs:DescribeServices",
+				"ecs:DescribeTaskDefinition",
+				"ecs:DescribeTasks",
+				"ecs:ListTasks",
+				"ecs:RegisterTaskDefinition",
+				"ecs:UpdateService",
+				"ecs:DescribeClusters"
+			],
+			"Resource": [
+				"arn:aws:s3:::codepipeline-us-east-1-948b6d797806-4ae5-8a87-66c1952b5864/*"
+			],
+			"Condition": {
+				"StringEquals": {
+					"aws:ResourceAccount": "721559936150"
+				}
+			}
+		},
+		{
+			"Sid": "AllowECSDeploy",
+			"Effect": "Allow",
+			"Action": [
+				"ecs:DescribeServices",
+				"ecs:DescribeTaskDefinition",
+				"ecs:DescribeTasks",
+				"ecs:ListTasks",
+				"ecs:RegisterTaskDefinition",
+				"ecs:UpdateService",
+				"ecs:DescribeClusters"
+			],
+			"Resource": [
+				"arn:aws:ecs:us-east-1:721559936150:cluster/allthecatapps/*",
+				"arn:aws:ecs:us-east-1:721559936150:service/allthecatapps/*",
+				"arn:aws:ecs:us-east-1:721559936150:task-definition/allthecatapps*"
+			]
+		},
+		{
+			"Sid": "AllowPassRoleForECS",
+			"Effect": "Allow",
+			"Action": [
+				"iam:PassRole"
+			],
+			"Resource": "*",
+			"Condition": {
+				"StringLike": {
+					"iam:PassedToService": "ecs-tasks.amazonaws.com"
+				}
+			}
+		}
+	]
+}
